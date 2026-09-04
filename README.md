@@ -27,7 +27,7 @@ references/
 Add it directly at the skill path Claude Code expects. If your project's `.claude/` directory is gitignored (common, since it holds machine-local settings alongside shared skills), use `-f` to force past that:
 
 ```bash
-git submodule add -f https://github.com/aellison/sitestudio-to-canvas-migration.git .claude/skills/sitestudio-to-canvas-migration
+git submodule add -f https://github.com/PerdueDigital/sitestudio-to-canvas-migration.git .claude/skills/sitestudio-to-canvas-migration
 git add -f .gitmodules .claude/skills/sitestudio-to-canvas-migration
 git commit -m "Add sitestudio-to-canvas-migration skill as submodule"
 ```
