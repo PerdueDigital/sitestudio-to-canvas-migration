@@ -6,28 +6,56 @@ It grew out of a real, in-progress migration on a multisite Drupal codebase, and
 
 ## What's in here
 
+This repo's root **is** the skill directory (agentskills.io layout), so it can be consumed directly as a git submodule:
+
 ```
-skills/sitestudio-to-canvas-migration/
-├── SKILL.md
-└── references/
-    ├── component-migration.md       # form.json → SDC component.yml conversion
-    ├── ui-component-migration.md    # UI-created (no-code) Site Studio components
-    ├── builtin-elements.md          # heading/text/image/button/etc. SDC equivalents
-    ├── style-migration.md           # Cohesion styles → Tailwind CSS v4
-    ├── layout-canvas-migration.md   # Canvas's flat component_tree storage model
-    ├── content-migration.md         # Migrate API plugin for bulk content conversion
-    └── migration-strategy.md        # phasing, discovery, decommission sequence
+SKILL.md
+references/
+├── component-migration.md       # form.json → SDC component.yml conversion
+├── ui-component-migration.md    # UI-created (no-code) Site Studio components
+├── builtin-elements.md          # heading/text/image/button/etc. SDC equivalents
+├── style-migration.md           # Cohesion styles → Tailwind CSS v4
+├── layout-canvas-migration.md   # Canvas's flat component_tree storage model
+├── content-migration.md         # Migrate API plugin for bulk content conversion
+└── migration-strategy.md        # phasing, discovery, decommission sequence
 ```
 
 ## Install
 
-Copy `skills/sitestudio-to-canvas-migration/` into your project's `.claude/skills/` directory:
+### Recommended: git submodule
+
+Add it directly at the skill path Claude Code expects. If your project's `.claude/` directory is gitignored (common, since it holds machine-local settings alongside shared skills), use `-f` to force past that:
 
 ```bash
-cp -r skills/sitestudio-to-canvas-migration /path/to/your/project/.claude/skills/
+git submodule add -f https://github.com/aellison/sitestudio-to-canvas-migration.git .claude/skills/sitestudio-to-canvas-migration
+git add -f .gitmodules .claude/skills/sitestudio-to-canvas-migration
+git commit -m "Add sitestudio-to-canvas-migration skill as submodule"
 ```
 
-Claude Code will pick it up automatically — no further configuration needed.
+Claude Code picks it up automatically — no further configuration needed.
+
+**Getting other developers in sync:** anyone cloning the project afterward needs the standard submodule init step:
+
+```bash
+git submodule update --init --recursive
+```
+
+Wire this into your normal environment bootstrap (a `ddev` `post-start` hook, a `composer` post-install script, an onboarding doc step) so it happens automatically rather than relying on everyone remembering it.
+
+**Pulling in updates:** a submodule pins an exact commit, so updates are explicit and reviewable:
+
+```bash
+cd .claude/skills/sitestudio-to-canvas-migration
+git fetch origin
+git checkout origin/main   # or a specific tag/commit
+cd -
+git add .claude/skills/sitestudio-to-canvas-migration
+git commit -m "Bump sitestudio-to-canvas-migration skill"
+```
+
+### Alternative: plain copy
+
+If your project can't use git submodules, copy the contents of this repo into `.claude/skills/sitestudio-to-canvas-migration/` directly. You lose the pinned-version/update-tracking benefits of a submodule and will need to manually re-copy to pick up changes.
 
 ## Using it on a real project
 
